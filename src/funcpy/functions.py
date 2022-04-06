@@ -6,9 +6,12 @@ T = TypeVar('T')
 
 
 # TODO mypy concatenate support
-def curry(f: Callable[..., T], arg) -> Callable[..., T]:
+def curry(f, arg):
     """Take a function and its first argument to create a curried function"""
-    return lambda *x: f(arg, *x)
+    try:
+        return f(arg)
+    except TypeError:
+        return lambda *x: f(arg, *x)
 
 
 # TODO Decorator version of curry

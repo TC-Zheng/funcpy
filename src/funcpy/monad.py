@@ -28,10 +28,10 @@ class Monad(Generic[T]):
         #   f' <- f
         #   v' <- v
         #   return $ f' v'
-        return self.bind(lambda f:
-                         ma.bind(lambda a:
-                                 # Here we manually check if the function needs curring
-                                 type(ma).pure(f(a)) if num_args(f) == 1 else type(ma).pure(curry(f, a))))
+        return self.bind(
+            lambda f: ma.bind(
+                lambda a:
+                    type(ma).pure(curry(f, a))))
 
     @classmethod
     def liftM(cls, f, a):
@@ -43,3 +43,15 @@ class Monad(Generic[T]):
     def liftM2(cls, f, a, b):
         # liftM2 :: ((a -> b) -> c) -> ((m a -> m b) -> m c)
         return cls.pure(f).apply(a).apply(b)
+
+    @classmethod
+    def liftM3(cls, f, a, b, c):
+        return cls.pure(f).apply(a).apply(b).apply(c)
+
+    @classmethod
+    def liftM4(cls, f, a, b, c, d):
+        return cls.pure(f).apply(a).apply(b).apply(c).apply(d)
+
+    @classmethod
+    def liftM5(cls, f, a, b, c, d, e):
+        return cls.pure(f).apply(a).apply(b).apply(c).apply(d).apply(e)
