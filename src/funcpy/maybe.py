@@ -1,15 +1,15 @@
-from typing import Generic, Any, TypeVar, Callable, ParamSpec
+from typing import Generic, Any, TypeVar, Callable
 
 from funcpy.monad import Monad
 
 T = TypeVar('T')
 S = TypeVar('S')
 R = TypeVar('R')
-Q = TypeVar('Q')
-P = ParamSpec('P')
+
 
 class Maybe(Generic[T], Monad[T]):
     """A value that is either a success (Just) or failure (Nothing)"""
+
     def __init__(self, val: T):
         self.Just = val
 
@@ -36,8 +36,6 @@ class Maybe(Generic[T], Monad[T]):
     def liftM(cls, f: Callable[[R], S], a: 'Maybe[R]') -> 'Maybe[S]':
         # fmap :: a -> b -> ma -> mb
         return super().liftM(f, a)  # type: ignore
-
-
 
 
 def Just(value: T) -> Maybe[T]:

@@ -1,5 +1,4 @@
 from typing import Callable, TypeVar, Any, Type, Iterable
-from inspect import signature
 from functools import reduce
 
 T = TypeVar('T')
@@ -15,20 +14,16 @@ def curry(f, arg):
 
 
 # TODO Decorator version of curry
-# def curry_dec(f):
-#     """
-#     Use when setup as decorator, you can partially apply function normally
-#     """
-#     sig = signature(f)
-#     num_params = len(sig.parameters)
-#
-#     def inner(*args, **kwargs):
-#         if len(args) + len(kwargs) < num_params:
-#             return lambda *x, **kxs: f(*args, *x, **kwargs, **kxs)
-#         else:
-#             return f(*args, **kwargs)
-#
-#     return inner
+def curry_dec(f):
+    """
+    Use when setup as decorator, you can partially apply function normally
+    """
+    def inner(*args, **kwargs):
+        try:
+            return f(*args, **kwargs)
+        except TypeError:
+            return lambda *x, **kxs: f(*args, *x, **kwargs, **kxs)
+    return inner
 
 def num_args(f: Callable[..., Any]) -> int:
     """Returns the number of arguments of a function"""
